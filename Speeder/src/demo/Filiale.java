@@ -104,7 +104,6 @@ public class Filiale {
         StaleElementReferenceException e) {
             e.printStackTrace();
             driver.close();
-            ;
         }
 
     }

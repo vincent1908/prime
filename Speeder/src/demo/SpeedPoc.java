@@ -156,19 +156,8 @@ public class SpeedPoc {
             System.out.println(stringTwo[i2]);
         }
 
-        System.out.println("-----------------------------------------------------------------");
-
         System.out.println("******************************************************************");
-        //
-        // int[] even = { 2, 4, 6 };
-        // int[] meEvenToo = { 2, 4, 6 };
-        // int[] odd = { 3, 5, 7 };
-        // boolean result = Arrays.equals(even, meEvenToo);
-        // System.out.printf("Comparing two int arrays %s and %s, are they Equal? %s %n ", Arrays.toString(even), Arrays.toString(meEvenToo), result);
-        //
-        // result = Arrays.equals(even, odd);
-        // System.out.printf("Comparing even and odd int arrays %s and %s, are they Equal? %s %n", Arrays.toString(even), Arrays.toString(odd),
-        // result);
+
         boolean result = Arrays.equals(stringOne, stringTwo);
         System.out.println(result);
     }

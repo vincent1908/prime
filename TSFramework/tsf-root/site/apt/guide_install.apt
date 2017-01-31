@@ -1,0 +1,215 @@
+                                    ------
+                   Guide d'installation et de configuration TSF
+                                    ------
+                                  C. MATRANGA
+                                    ------
+                                  30/09/2014
+
+
+[images/logo_tsf_mini_v1.jpg] 
+
+Guide d'installation du composant TSF
+
+ * <<{{{Introduction}
+  Introduction}}>>
+
+ * <<{{{Prérequis}
+   Prérequis}}>>
+
+ * <<{{{Installation du composant TSF}
+	Installation du composant TSF}}>>
+
+ * <<{{{Installation du plugin Selenium IDE}
+	Installation du plugin Selenium IDE}}>>
+
+
+{Introduction}
+
+	L'installation du composant TSF se réalise au travers de Maven via la configuration du POM. Le composant TSF
+	va automatiquement tirer les dépendances du framework Sélénium dans la configuration du projet.  
+
+
+
+{Prérequis}
+
+	* Environnement de développement :
+ 
+		* L'outil de développement Eclipse
+	
+		* Un environnement configuré avec Maven :  Client JIP PSA
+
+
+
+{Installation du composant TSF}
+
+	L'installation du composant passe par la configuration du fichier <<pom.xml>> du projet. La première 
+	chose à faire est de déclarer une propriété <<Version>> exemple :
+	
++---------------------------------------------+
+	<versionTSF>1.0.0</versionTSF>
++---------------------------------------------+
+
+	Cette propriété permet de simplifier la gestion de la version du composant TSF.
+
+[images/config_pom_tsf_1.jpg]
+
+	<<Configuration de la propriété Version de TSF>>
+
+
+	Il faut ensuite ajouter le bloc de dépendance TSF. Deux approches sont possibles.
+	 
+	* Approche 1 :
+	
+		Soit le projet possède plusieurs modules dont un module <<root>> et un module <<webapp>> ou <<webtest>>
+		et dans ce cas il est plus intéressant de déclarer la dépendance dans le pom.xml du module <<root>> :
+	 
++--------------------------------------------------------------------------------+	
+	<dependencyManagement>                                
+		<dependencies>                                    
+		...                                               
+		...                                               
+			<dependency>                                  
+				<groupId>com.inetpsa.tsf00</groupId>      
+				<artifactId>tsf-core</artifactId>         
+				<version>${versionTSF}</version>          
+				<scope>provided</scope>                   
+			<dependency>                                  
+		...                                               
+		...                                               
+		<dependencies>                                    
+	</dependencyManagement>                               
++--------------------------------------------------------------------------------+
+
+
+	et ajouter ensuite la dépendance dans le module <<webapp>> ou le module <<webtest>>
+	
++--------------------------------------------------------------------------------+		
+	<dependencies>
+		...
+		...
+		<dependency>
+  			<groupId>com.inetpsa.tsf00</groupId>
+  			<artifactId>tsf-core</artifactId>
+		</dependency>
+		...
+		...
+	</dependencies>
++--------------------------------------------------------------------------------+	
+
+
+
+	* Approche 2 :
+	
+		Déclarer la dépendance uniquement dans le module dans lequel les tests IHMs seront créés
+	
++--------------------------------------------------------------------------------+	                   
+		<dependencies>                                    
+		...                                               
+		...                                               
+			<dependency>                                  
+				<groupId>com.inetpsa.tsf00</groupId>      
+				<artifactId>tsf-core</artifactId>         
+				<version>${versionTSF}</version>          
+				<scope>provided</scope>                   
+			<dependency>                                  
+		...                                               
+		...                                               
+		<dependencies>
++--------------------------------------------------------------------------------+	
+
+
+ 	Une fois le fichier pom.xml édité, il suffit de lancer une commande Maven pour récupérer les Jar nécessaires
+ 	à la création des tests IHMs. 
+ 	
+*--------------------------------------------------------------------------------+		
+| mvn -U dependency:resolve														 |
+*--------------------------------------------------------------------------------+	 	
+
+		ou
+
+*--------------------------------------------------------------------------------+		
+| mvn clean install -U -Dmaven.test.skip=true -e														 |
+*--------------------------------------------------------------------------------+	 	
+
+
+	Il est possible de lancer cette commande directement depuis l'environnement de développement Eclipse.
+	
+[images/eclipse_env_1.jpg]
+
+	<<Configuration Eclipse - Commande Maven>>	
+	 
+ 
+[images/eclipse_env_2.jpg]
+
+	<<Configuration Eclipse - Executable Maven>>		 
+
+
+	Maintenant que les archives Java (JAR) sont dans votre Repository locale, il suffit de les référencer dans le classpath
+	du projet dans lequel vous allez créer les tests IHMs. Encore une fois, Maven va vous permettre de mettre à jour le classpath
+	de manière automatique.
+
+*--------------------------------------------------------------------------------+		
+| mvn eclipse:clean eclipse:eclipse 										     |
+*--------------------------------------------------------------------------------+	 
+
+[images/eclipse_env_3.jpg]
+
+	<<Configuration Eclipse - Classpath réalisé via Maven>>		
+
+
+
+ATTENTION
+
+	Dans certain cas, si le projet utilise des Jars Xerces ou Xalan, il se peut que certains conflits apparaissent car
+	Sélénium référence également ces Jars. Pour éviter ce genre de problème il est possible d'exclure ces archives de
+	la manière suivante:
+
++--------------------------------------------------------------------------------+	                   
+		<dependencies>                                    
+		...                                               
+		...                                               
+			<dependency>                                  
+				<groupId>com.inetpsa.tsf00</groupId>      
+				<artifactId>tsf-core</artifactId>         
+				<version>${versionTSF}</version>          
+				<scope>provided</scope>                   
+			<dependency>
+			
+			<exclusions>
+  				<exclusion>
+		  			<groupId>xalan</groupId>
+		  			<artifactId>xalan</artifactId>
+  				</exclusion>
+  				<exclusion>
+		  			<groupId>xerces</groupId>
+		  			<artifactId>xercesImpl</artifactId>
+  				</exclusion>
+  			</exclusions>
+  			                                  
+		...                                               
+		...                                               
+		<dependencies>
++--------------------------------------------------------------------------------+	
+
+
+{Installation du plugin Selenium IDE}
+
+	Pour réaliser les tests de manière simple, il est nécessaire d'installer le plugin Sélénium IDE. En effet
+	ce plugin, disponible uniquement sous firefox, permet de faire la capture en temps réel du test réalisé par
+	un utilisateur, et permet ensuitre d'exporter ce test au format Java/Junit. Pour installer le plugin il faut 
+	suivre la démarche suivante : 
+	
+	* Installation via la PSAV3
+	
+		Il suffit d'aller sur l'application <<Reflex>> à partir de votre Fan, sélectionner l'entrée <<Logiciel PSAV3>>,
+		et prendre <<Sélénium IDE 1.0.7.0>> dans la liste <<Choisir un logiciel>>. L'installation se fera directement sur votre firefox
+		au travers d'une mise à jour de la PSAV3.
+		
+[images/install_selenium_ide_1.jpg]
+
+	<<Demande d'installation du plugin Sélénium>>
+
+ 
+ 	Pour de plus amples informations sur le plugin Sélénium IDE voir le document : {{{./principe_selenium.html} Principe Sélénium.}} 
+
+

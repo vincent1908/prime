@@ -106,7 +106,12 @@ public class NewDoPr {
                         WebElement secteur = driver
                                 .findElement(By.xpath(".//*[@id='bodyFiltre']/fieldset/form[3]/fieldset[1]/table/tbody/tr[3]/td[5]/select"));
                         List<WebElement> secteurList1 = secteur.findElements(By.tagName("option"));
+                        for (WebElement webElement : secteurList1) {
+                            System.out.println("drop4 elements : " + webElement.getText());
+                        }
                         System.out.println("dropdown4 count : " + secteurList1.size());
+
+                        System.out.println();
                         // for (int m = 0; m < secteurList1.size(); m++) {
                         for (int m = 2; m < secteurList1.size(); m++) {
                             // for (int m = 2; m < 8; m++) {
@@ -129,6 +134,9 @@ public class NewDoPr {
                             WebElement cDoPr = driver.findElement(By.xpath(".//*[@id='cdClientSelect']"));
                             Thread.sleep(2000);
                             List<WebElement> cDoPrList1 = cDoPr.findElements(By.tagName("option"));
+                            for (WebElement webElement1 : cDoPrList1) {
+                                System.out.println("drop5 elements : " + webElement1.getText());
+                            }
                             Thread.sleep(2000);
                             System.out.println("dropdown5 count : " + cDoPrList1.size());
                             for (int n = 1; n < cDoPrList1.size(); n++) {
@@ -156,6 +164,9 @@ public class NewDoPr {
                                 WebElement raison = driver.findElement(By.xpath(".//*[@id='lbClientSelect']"));
 
                                 List<WebElement> raisonList = raison.findElements(By.tagName("option"));
+                                for (WebElement webElement2 : raisonList) {
+                                    System.out.println("drop6 elements : " + webElement2.getText());
+                                }
 
                                 System.out.println("dropdown6 count : " + raisonList.size());
 
@@ -194,9 +205,13 @@ public class NewDoPr {
                                     }
 
                                     String resultsOne;
+                                    // String[] items;
                                     try {
                                         resultsOne = driver.findElement(By.xpath(".//*[@id='tableTotal']")).getText();
                                         System.out.println(resultsOne);
+                                        // resultsOne = resultsOne.substring(4, resultsOne.length());
+                                        // items = resultsOne.replace(",", "").split(" ");
+                                        // System.out.println(items);
 
                                     } catch (Exception e) {
                                         // TODO Auto-generated catch block

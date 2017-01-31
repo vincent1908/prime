@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.inetpsa.pyr00</groupId>
+		<artifactId>pyr-pom-root</artifactId>
+		<version>2.0.1</version>
+	</parent>
+
+	<properties>    
+		<versionPluginCheckstyle>2.3</versionPluginCheckstyle>            
+		<sourceEncoding>UTF-8</sourceEncoding>
+		<envInst>tsf00</envInst>
+		<svnUser>mdetsf00</svnUser>
+		<svnRoot>/svn/tsf00/trunk/</svnRoot>
+		<svnModuleName>tsf-root</svnModuleName>
+		<svnUrl>http://svn3.informatique.inetpsa.com</svnUrl>
+        <sonar.exclusions>file:**/src/**/run/**/Start*.java,**/*Dummy*.java,**/templates/**/*.* (file:**/src/**/run/**/Start*.java,**/*Dummy*.java,**/templates/**/*.*), **/*.js</sonar.exclusions>
+        
+        
+        <cvsUser />                  
+        <cvsHost />                  
+        <cvsRoot />    
+        <cvsModuleName />
+
+		<qualificationAppliJava>2.0.0</qualificationAppliJava>		
+		
+		<!-- Source en 1.6 -->
+		<compileSource>1.6</compileSource>
+		<javaSourceCompatibility>${compileSource}</javaSourceCompatibility>
+		<javaTargetCompatibility>${compileSource}</javaTargetCompatibility>
+				
+		<!-- Version du plugin Eclipse -->
+		<versionPluginEclipse>2.8</versionPluginEclipse>
+		<versionPluginPyramide>2.2.1</versionPluginPyramide>
+		
+		<targetJdk>${compileSource}</targetJdk>
+		<currentJavaPath>${javaPath_16}</currentJavaPath>
+		
+		<versionSeleniumServer>2.44.0</versionSeleniumServer>    
+		<jacocoExecFile>${project.basedir}/../jacoco.exec</jacocoExecFile> 
+		<sonar.exclusions>com/inetpsa/tsf/selenium/report/resources/**/*</sonar.exclusions>  
+	</properties>
+	
+	<scm>
+	    <connection>scm:svn:http://svn3.informatique.inetpsa.com/svn/tsf00/trunk/</connection>
+	    <developerConnection>scm:svn:http://svn3.informatique.inetpsa.com/svn/tsf00/trunk/</developerConnection>
+	</scm>
+	
+	<groupId>com.inetpsa.tsf00</groupId>
+	<artifactId>tsf-root</artifactId>
+	<version>1.5.0-SNAPSHOT</version>
+	<packaging>pom</packaging> 
+	<name>tsf-root : Module root</name>
+	<description>tsf : Module root</description>
+	
+	<modules>
+		<module>../tsf-common</module>
+		<module>../tsf-core</module>
+	</modules>
+	
+	<build>
+        <plugins> 			         
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-archetype-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>            
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>				
+				<configuration>
+					<includes>
+						<include>**/*</include>
+					</includes>					
+				</configuration>
+			</plugin>	
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>				
+				<configuration>
+					<locales>fr,en</locales>					
+				</configuration>
+			</plugin>	
+	
+			<plugin>
+               <groupId>com.inetpsa.pyr00.plugins</groupId>
+                <artifactId>maven-pyr-jira-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>                	
+                	<execution>                	
+                		<phase>site</phase>
+                	</execution>
+                </executions>
+                <configuration>
+                	<jiraConfiguration>
+                		<generateVersionWorkload>true</generateVersionWorkload>
+                		<generateVersionHistory>true</generateVersionHistory>
+                		<jiraProjects>
+                			<jiraProjectConfiguration>
+                				<jiraProjectName>SIFATSF</jiraProjectName>
+                			</jiraProjectConfiguration>
+                		</jiraProjects>
+                	</jiraConfiguration>
+                </configuration>
+            </plugin>            
+			
+			<plugin>
+                <groupId>com.inetpsa.ltp00.plugins</groupId>
+                <artifactId>maven-ltp-release-plugin</artifactId>
+                <version>1.4.1</version>
+        		<inherited>false</inherited>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <operations>
+                        <configurationJira>
+							<autoCommitAlteredFiles>true</autoCommitAlteredFiles>
+                            <doSendMail>true</doSendMail>
+                            <doSendMailJIRAAwaitingValidationMOE>true</doSendMailJIRAAwaitingValidationMOE>
+							<idJiraComposantPrincipal>SIFATSF</idJiraComposantPrincipal>							
+							<showJiraFromComposantsDependants>true</showJiraFromComposantsDependants>
+                        </configurationJira>
+                    </operations>
+                </configuration>
+            </plugin>
+                                  
+		</plugins>
+	</build>
+		
+	
+</project>

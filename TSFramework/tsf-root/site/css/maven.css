@@ -1,0 +1,216 @@
+body {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	margin-left: auto;
+	margin-right: auto;
+	background-repeat: repeat-y;
+	font-size: 13px;
+	padding: 0px;
+}
+td, select, input, li{
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color:#333333;
+}
+code{
+  font-size: 12px;
+}
+a {
+  text-decoration: none;
+}
+a:link {
+  color:#0D7000;
+}
+a:visited  {
+  color:#666666;
+}
+a:active, a:hover {
+  color:#FDA907;
+}
+#legend li.externalLink {
+  background: url(../images/external.png) left top no-repeat;
+  padding-left: 18px;
+}
+a.externalLink, a.externalLink:link, a.externalLink:visited, a.externalLink:active, a.externalLink:hover {
+  background: url(../images/external.png) right center no-repeat;
+  padding-right: 18px;
+}
+#legend li.newWindow {
+  background: url(../images/newwindow.png) left top no-repeat;
+  padding-left: 18px;
+}
+a.newWindow, a.newWindow:link, a.newWindow:visited, a.newWindow:active, a.newWindow:hover {
+  background: url(../images/newwindow.png) right center no-repeat;
+  padding-right: 18px;
+}
+h2 {
+	font-size: 17px;
+	color: #0D7000;  
+}
+h3 {
+	padding: 4px 4px 4px 24px;
+	color: #80A37C;
+	background-color: #DBF4D3;
+	border: 1px solid #0D7000;
+	font-weight: bold;
+	font-size: 14px;
+	background-image: url(../images/h3.gif);
+	background-repeat: no-repeat;
+	background-position: left bottom;
+}
+p {
+  line-height: 1.3em;
+  font-size: 12px;
+  color: #000;
+}
+#breadcrumbs {
+	height: 13px;
+	background-image: url(../images/breadcrumbs.jpg);
+	padding: 5px 10px 14px 20px;
+	font-weight: bold;
+}
+* html #breadcrumbs {
+	padding-bottom: 8px;
+}
+#leftColumn {
+	width: 150px;
+	float:left;
+	margin: 10px 0 10px 0;
+	border-top-color: #0D7000;
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-right-color: #0D7000;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-bottom-color: #0D7000;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	padding-right: 5px;
+	padding-left: 5px;
+  	background-color: #DBF4D3;
+}
+#navcolumn h5 {
+	font-size: smaller;
+	border-bottom: 1px solid #aaaaaa;
+	padding-top: 2px;
+	color: #0D7000;
+}
+
+table.bodyTable th {
+  color: white;
+  background-color: #bbb;
+  text-align: left;
+  font-weight: bold;
+}
+
+table.bodyTable th, table.bodyTable td {
+  font-size: 11px;
+}
+
+table.bodyTable tr.a {
+  background-color: #ddd;
+}
+
+table.bodyTable tr.b {
+  background-color: #eee;
+}
+
+.source {
+  border: 1px solid #999;
+  overflow:auto
+}
+dt {
+	padding: 4px 4px 4px 24px;
+	color: #333333;
+	background-color: #DBF4D3;
+	font-weight: bold;
+	font-size: 14px;
+	background-image: url(../images/h3.gif);
+	background-repeat: no-repeat;
+	background-position: left bottom;
+}
+.subsectionTitle {
+	font-size: 13px;
+	font-weight: bold;
+	color: #666;
+
+}
+
+table {
+	font-size: 10px;
+}
+.xleft, #bannerLeft img{
+	float:left;
+	color: #FAFBD1;
+	text-shadow: #7CFC00;
+} 
+.xright, #bannerRight img, #bannerRight span{
+  float:right;
+  text-shadow: #7CFC00;
+
+}
+.xright a:link, .xright a:visited, .xright a:active{
+  color: #FAFBD1;
+}
+.xright a:hover{
+  color: #FDA907;
+}
+#banner {
+	height: 27px;
+	width: 100%;
+	background: url(../images/banner.jpg);
+	padding: 0px;
+}
+#banner img {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+#bannerLeft {
+	font-size: 13px;
+	vertical-align: top;
+}
+#navcolumn ul {
+	margin: 5px 0 15px -0em;
+}
+#navcolumn ul a {
+	color: #333333;
+}
+#navcolumn ul a:hover {
+	color: #FDA907;
+}
+#intro {
+	border: solid #ccc 1px;
+	margin: 6px 0px 0px 0px;
+	padding: 10px 40px 10px 40px;
+}
+.subsection {
+	margin-left: 3px;
+	color: #333333;
+}
+
+.subsection p {
+	font-size: 12px;
+}
+#footer {
+  padding: 10px;
+  margin: 20px 0px 20px 0px;
+  border-top: solid #ccc 1px; 
+  color: #333333;
+}
+
+.errormark, .warningmark, .donemark, .infomark {
+  background: url(../images/icon_error_sml.gif) no-repeat;
+}
+
+.warningmark {
+  background-image: url(../images/icon_warning_sml.gif);
+}
+
+.donemark {
+  background-image: url(../images/icon_success_sml.gif);
+}
+
+.infomark {
+  background-image: url(../images/icon_info_sml.gif);
+}
+

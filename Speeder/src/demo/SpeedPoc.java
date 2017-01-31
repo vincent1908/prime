@@ -159,7 +159,20 @@ public class SpeedPoc {
         System.out.println("******************************************************************");
 
         boolean result = Arrays.equals(stringOne, stringTwo);
+
         System.out.println(result);
+
+        // int[] a = { 0, 1, 2 };
+        // int[] b = { 3, 4, 5 };
+        // int[] c = new int[a.length];
+        // for (int i = 0; i < a.length; ++i) {
+        // c[i] = a[i] + b[i];
+        //
+        // System.out.println(c[i]);
+        //
+        // String stringAll = stringOne[i] + stringTwo[i];
+        // System.out.println(stringAll);
+        // }
     }
 
 }

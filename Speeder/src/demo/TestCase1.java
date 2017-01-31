@@ -11,10 +11,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 public class TestCase1 {
-
     public static void main(String[] args) throws Exception {
-
         // pull values to string array from appln .....
+        // convert string array to long array
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -37,74 +36,21 @@ public class TestCase1 {
         driver.findElement(By.cssSelector("#trbody > td")).click();
         driver.findElement(By.cssSelector("#bodyFiltre > table > tbody > tr > td > a > img")).click();
         System.out.println("Result fetching");
-        // values pulled to string
-        // int a[]=null;
-        // int number =0;
         String resultsOne = driver.findElement(By.xpath(".//*[@id='tableTotal']")).getText();
-
         resultsOne = resultsOne.substring(4, resultsOne.length());
         String[] items = resultsOne.replace(",", "").split(" ");
-        // System.out.println("newChar:" + newChar);
-
-        System.out.println("items:" + items);
         String[] results = new String[items.length];
         for (int i = 1; i < items.length; i++) {
-            System.out.println("items:" + items[i]);
+            System.out.println(items[i]);
             results[i] = items[i];
-
-            // results.
         }
-        double[] numbers = new double[results.length];
+        // double[] numbers = new double[results.length];
         for (int i = 1; i < results.length; i++) {
-            // Note that this is assuming valid input
-            // If you want to check then add a try/catch
-            // and another index for the numbers if to continue adding the others
-            numbers[i] = Double.parseDouble(results[i]);
+            // numbers[i] = Double.parseDouble(results[i]);
+            long l = Double.valueOf(results[i]).longValue();
+            System.out.println(l);
         }
-        System.out.println("trsult:" + numbers);
-
-        // for (int i = 0; i < items.length; i++) {
-        // try {
-        // results[i] = Integer.parseInt(items[i]);
-        // System.out.println("no:" + results[i]);
-        // } catch (NumberFormatException nfe) {
-        // // NOTE: write something here if you need to recover from formatting errors
-        // }
-        //
-        // }
-        // String[] no = resultsOne.split("\\s+");
-        // System.out.println("no:" + no);
-        // int[] arrayCrit = new int[no.length];
-        // System.out.println(resultsOne);
-        // // String new ="";
-        // // int resultsOneSize = driver.findElements(By.className("entetezone")).size();
-        // // System.out.println(resultsOneSize);
-        // for (int i = 0; i < no.length; i++) {
-        // // String resultsStr = driver.findElement(By.xpath(".//*[@id='tableTotal']/tbody/tr/td[3+i]")).getText();
-        // System.out.println("number:" + no[i]);
-        // // reseult.re"",
-        // // conert resut oneinteger = greg
-        // // int a [i] = greg;
-        // // new = resultsOne[i];
-        // arrayCrit[i] = Integer.parseInt(no[i]);
-        // System.out.println("number:" + arrayCrit[i]);
-        //
-        // //
-        // }
-
-        // System.out.println("String Array");
-        // // values converted to string array
-        // String stringOne[] = resultsOne.split(" ");
-        // double[] results = new double[stringOne.length];
-        // for (int i = 0; i < stringOne.length; i++) {
-        // results[i] = Double.parseDouble(stringOne[i].replaceAll(",", ""));
-        // System.out.println(results);
-        //
-        // }
-
         Thread.sleep(3000);
         driver.quit();
-
     }
-
 }

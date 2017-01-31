@@ -1,0 +1,151 @@
+                                    ------
+                                 Guide Dev TSF
+                                    ------
+                                   E365712
+                                    ------
+                                  27/05/2014
+
+
+[../images/logo_tsf_mini_v1.jpg] 
+
+Guide of IHM Report
+
+ * <<{{{How it goes}
+  How it goes}}>>
+
+ * <<{{{How to configure it}
+   How to configure it}}>>
+
+ * <<{{{Report structure}
+	Report structure}}>>
+	
+ * <<{{{Examples}
+	Examples}}>>
+
+
+{How it goes}
+
+	About the principle of report runs as follows:
+	
+	* Parameter configuration
+	
+		** Set the parameter 'activateReport' to 'true'.(In the selenium.properties).
+	  	
+		** If necessary, please set the parameter 'reportPath'.(In the selenium.properties)
+	  	The report path provides you the report of the report build path.
+	  	Default value is the project root directory.
+	  	
+		** If the ihm test has scenario file, please set the parameter 'scenario.path'.(In the TestMain.java)
+	  	
+	* Start test
+	  	
+	  	** If you want to generate the TSF report, you must run the TestMain.java which contains test suits.
+	  	We can't run the single test class without TSFStartNavigateur.java and TSFStopNavigateur.java.
+	  	Because some report processing code existed in these two class.
+	  	
+	* Generate Report
+	  	
+	  	** Refresh the project, then see the testReport folder
+	  	
+	  	** Open the index.html in the browser.(Under the testReport folder root directory)
+
+
+{How to configure it}
+
+	To run the report program correctly. The first 
+	thing to do is to declare some properties in the selenium.properties for example :
+	
++---------------------------------------------+
+	#Selenium report(true: use report, false: not use report)
+	activateReport=false
+	#Selenium report path
+	#Example: run/
+	reportPath=
++---------------------------------------------+
+
+	Then second thing we need to declare a scenario path in the TestMain.java for example :
+
++---------------------------------------------+
+	//The scenario path contains the scenario files and images which need to copy to the report folder.
+	System.setProperty("scenario.path", "/run");
++---------------------------------------------+
+
+{Report structure}
+
+    About the principle of report structure as follows:
+
+[../images/report_structure.jpg]	
+
+ 	* selenium.log : save all log information in the test process.
+ 	
+ 	* index.html : the main page which contains summary information for all test results.
+ 	
+ 	* XXX.html : the detail page which contains detail information for one test result.
+ 	(XXX is the name of the test class name, ex : testGestionParc.html is according to the testGestionParc.java) 
+
+	* log folder : contains all the log html file.(Each test class has one log html, ex : testGestionParc.html)
+	
+	* resource folder : contains the javascript, cascading style sheets and icons needed for the report display.
+	
+	* scenarios folder : contains all scenario files and images.
+
+{Examples}
+
+    Now we look at the effect when the report is generated.
+	
+    First, we open the index.html. We can see the main page of report.
+	
+[../images/report_mainPage.jpg]	
+
+    In the main page, it contains:
+	
+		* Project name
+		
+		* Beginning Date of selenium test
+		
+		* Each test class (name, scenario(if existed), success rate, failure rate, execution time)
+		
+		* Each test case (name, execution time)
+		
+		* Database information (if database has exception)
+	
+    If scenario existed, we can click the scenario file icon, then see the below:
+	
+[../images/report_displayScenario.jpg]	
+
+    Each scenario file contains a test class testing process.
+	
+    We can jump from the main page to the detail page.
+
+[../images/report_detailPage.jpg]
+
+    The detail page contains :
+ 
+	    * Test case name
+	 	
+	    * Selenium code which call in the process of testing 
+		
+	    * Error message(verification errors and exceptions)
+		
+	    * Information message(display some special information, project Corail needs)
+		
+	    * Screen shot
+		
+	    * Image comparison
+    
+    If screenshot existed, we can click the screenshot icon, then see the below:
+     
+[../images/report_screenshot.jpg]
+
+    In the detail page, we can click the log icon, then see the below:
+	
+[../images/report_logView.jpg]
+
+	
+		
+
+		  
+
+
+
+

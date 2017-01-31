@@ -1,0 +1,151 @@
+                                    ------
+                                 Guide Dev TSF
+                                    ------
+                                   E395496
+                                    ------
+                                  30/05/2014
+
+
+[images/logo_tsf_mini_v1.jpg] 
+
+Guide de l'IHM Rapport
+
+ * <<{{{Comment ça marche}
+  Comment ça marche}}>>
+
+ * <<{{{La mise en place}
+   La mise en place}}>>
+
+ * <<{{{Structure du rapport}
+	Structure du rapport}}>>
+	
+ * <<{{{Exemples}
+	Exemples}}>>
+
+
+{Comment ça marche}
+
+	Les principes du déroulement du rapport sont les suivants :
+	
+	* La configuration de la paramétrie
+	
+		** Définir le paramètre 'activateReport' comme 'true'.(Dans le ficher selenium.properties).
+	  	
+		** Définir le paramètre 'reportPath' en cas de besoin.(Dans le ficher selenium.properties)
+	  	Le chemin du rapport met à disposition le chemin de la mise à point du rapport.
+	  	Pae défaut il s'agit de la répertoire racine du projet.
+	  	
+		** S'il y a des fichers scenario sur l'ihm du test, il faut définir le paramètre 'scenario.path'.(Dans le ficher TestMain.java)
+	  	
+	* Déclenchement du test
+	  	
+	  	** Pour générer le rapport TSF, il faut lancer le TestMain.java qui contient les test suits.
+	  	On ne peut pas lancer la classe du test sans lancer les TSFStartNavigateur.java et TSFStopNavigateur.java.
+	  	Comme certains codes du rapport existent déjà dans ces deux classes.
+	  	
+	* Génération du Rapport
+	  	
+	  	** Rafraîchir le projet, puis se trouver dans le dossier testReport
+	  	
+	  	** Ouvrir l'index.html via le navigateur.(Qui se trouve sous la répertoire racine du dossier testReport)
+
+
+{La mise en place}
+
+	Pour bien lancer l'application du rapport, tout d'abord
+	il faut déclarer des propriétés dans le ficher selenium.properties par exemple :
+	
++---------------------------------------------+
+	#Selenium report(true: utiliser le rapport, false: ne pas utiliser le rapport)
+	activateReport=false
+	#Selenium report path
+	#Exemple: run/
+	reportPath=
++---------------------------------------------+
+
+	Ensuite il faut déclarer un chemin du scénario dans le ficher TestMain.java par exemple :
+
++---------------------------------------------+
+	//Le chemin du scénario est lié aux fichers et images du scénario qui seront recopiés dans le dossier du rapport.
+	System.setProperty("scenario.path", "/run");
++---------------------------------------------+
+
+{Structure du rapport}
+
+    La structure du rapport est la suivante :
+
+[images/report_structure.jpg]	
+
+ 	* selenium.log : regroupe toutes les informations du log en cours du déroulement du test.
+ 	
+ 	* index.html : la page d'accueil contenant les informations récapitulatives sur tout les résultats du test.
+ 	
+ 	* XXX.html : la page de détail contenant les informations détaillées sur un certain résultat du test.
+ 	(XXX correspond au nom de la classe du test, ex : testGestionParc.html est lié au testGestionParc.java) 
+
+	* dossier log : regroupe tout les fichers log html.(Un seul log html pour chaque classe du test, ex : testGestionParc.html)
+	
+	* dossier resource : regroupe les javascript, css et les icônes nécessaires pour l'affichage du rapport.
+	
+	* dossier scenarios : regroupe tout les fichers du scénario et tout les images.
+
+{Exemples}
+
+    On peut maintenant jeter un coup d'oeil sur le rapport généré.
+	
+    Il faut tout d'abord ouvrir le ficher index.html. C'est la page d'accueil du rapport qui s'affiche.
+	
+[images/report_mainPage.jpg]	
+
+    La page d'accueil contient :
+	
+		* Le nom du projet
+		
+		* La date de début du test selenium
+		
+		* Chaque classe du test (nom, scenario(si existant), taux de succès, taux d'échec, durée d'exécution)
+		
+		* Chaque scénario du test (nom, durée d'exécution)
+		
+		* Les informations de la base de données (en cas d'exception dans la base de données)
+	
+    Si le scénario existe déjà, un clic sur l'icône ficher de scénario permet d'afficher une vue suivante:
+	
+[images/report_displayScenario.jpg]	
+
+    Chacun des fichers scénario contient une classe de test testing process.
+	
+    On peut passer de la page d'accueil à la page de détail.
+
+[images/report_detailPage.jpg]
+
+    La page de détail contient :
+ 
+	    * Le nom du scénario du test
+	 	
+	    * Le code de Selenium appelé dans le processus du test 
+		
+	    * Le message d'erreur(erreurs de vérification et exceptions)
+		
+	    * Le message d'information(affichage des informations spéciales, à la demande du projet Corail)
+		
+	    * La capture d'écran
+		
+	    * L'image de comparaison
+    
+    Si la capture d'écran existe déjà, un clic sur l'icône screenshot permet de l'afficher :
+     
+[images/report_screenshot.jpg]
+
+    Sur la page de détail, un clic sur l'icône log permet d'afficher une vue suivante :
+	
+[images/report_logView.jpg]
+
+	
+		
+
+		  
+
+
+
+

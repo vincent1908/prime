@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="selenium_test" default="junit-report" basedir=".">
+	
+	<property name="src.dir" location="${basedir}"/>
+	<property name="src_ltp.dir" location="../../../../ltp/test/support"/>
+	<property name="classes.dir" location="${basedir}\build\classes"/>
+	<property name="junit.reports.dir" location="${basedir}\build\junit"/>
+	<property name="test.reports" value="${basedir}\build\reports" />
+	<property name="lib_q3p.dir" location="../../../../../../../web/WEB-INF/lib"/>
+	
+	<path id="classpath">
+		<fileset dir="${lib_q3p.dir}" includes="**/*.jar"/>
+	</path>
+		
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="TODAY_FR" pattern="hh:mm dd-MM-yyyy" locale="fr,FR"/>
+		</tstamp>
+		
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${junit.reports.dir}/xml"/>
+		<mkdir dir="${test.reports}"/>
+		<mkdir dir="${test.reports}/html"/>
+	</target>
+ 
+	<target name="compile" depends="init"  description="compile sources" >
+		<!-- Compile the java code from ${src} into ${build} -->		
+		<javac srcdir="${src_ltp.dir}" destdir="${classes.dir}" classpathref="classpath">
+			<classpath>
+				<path refid="classpath"/>
+				<pathelement path="lib/junit-4.5.jar"/>
+			</classpath>
+		</javac>
+		
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath">
+			<classpath>
+				<path refid="classpath"/>
+				<pathelement path="lib/junit-4.5.jar"/>
+			</classpath>
+		</javac>
+		
+		<copy todir="${classes.dir}/com/inetpsa/q3p/topologie/test/web">
+		  <fileset dir="${src.dir}">
+		    <include name="**/*.properties"/>
+		  </fileset>
+		</copy>
+	</target>
+	
+	<target name="test" depends="compile" description="runs TestMain test cases">
+		<!-- Runs .class files from ${build} -->
+		<junit forkmode="perBatch" printsummary="yes" haltonerror="no"  haltonfailure="no">
+			<classpath>
+				<path refid="classpath"/>
+				<pathelement location="${classes.dir}"/>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${junit.reports.dir}/xml">
+				<fileset dir="${classes.dir}" includes="**/TestMain.class" />
+			</batchtest>			
+		</junit>
+	</target>
+	
+	<target name="junit-report" depends="test" description="Generates JUnit HTML report">
+		<!-- Generate JUnit report from xml files in ${junit.reports.dir}/xml -->
+		<junitreport  todir="${test.reports}">
+			<fileset dir="${junit.reports.dir}/xml">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="noframes" todir="${test.reports}/html" /> 
+		</junitreport>
+	</target>
+	
+	<target name="clean" description="clean up" >
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${classes.dir}"/>
+		<delete dir="${junit.reports.dir}"/>
+		<delete dir="${test.reports}"/>
+		<delete dir="${basedir}/build"/>
+	</target>
+</project>

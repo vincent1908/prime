@@ -1,0 +1,598 @@
+                                    ------
+                                 Guide Dev TSF
+                                    ------
+                                  C. MATRANGA
+                                    ------
+                                  30/09/2013
+
+
+[images/logo_tsf_mini_v1.jpg] 
+
+Guide de développement de test IHM
+
+ * <<{{{Introduction}
+  Introduction}}>>
+
+ * <<{{{Prérequis}
+   Prérequis}}>>
+
+ * <<{{{Création de tests IHM avec TSF}
+	Création de tests IHM avec TSF}}>>
+	
+ * <<{{{Exécution des tests IHMs}
+	Exécution des tests IHMs}}>>
+
+
+{Introduction}
+
+	Le guide de développement des tests IHMs, a pour but de présenter la mise en oeuvre de TSF et Sélénium pour
+	réaliser des tests IHMs des applications WEB.
+
+
+{Prérequis}
+
+	* Environnement de développement :
+ 
+		* L'outil de développement Eclipse configuré :
+			
+			** Configuration TSF : {{{./guide_install.html} voir le guide d'installation}}
+			
+			** Junit 4 présent 
+			
+		* Un navigateur Firefox 
+		
+			** Le plugin Selenium IDE doit être installé : {{{./guide_install.html} voir le guide d'installation}} 
+
+
+
+{Création de tests IHM avec TSF}
+
+	Le principe de création d'un test IHM est le suivant :
+	
+		* Commencer par créer une classe Abstraite héritant de la classe TSF : <<AbstractTSFManagerSeleniumTestCase>>.
+		Pour l'exemple cette classe s'appelle <<AbstractQ3PTestTsf>> est créée dans un projet sous run/test/tsf/
+		
+		* Dans la classe abstraite spécifique au projet il est possible d'ajouter des méthodes d'initialisation, utilitaires, etc.
+		
+		* Maintenant il faut créer une classe de test pour une IHM qui va hériter de la classe <<AbstractQ3PTestTsf>>
+		  Pour l'exemple cette classe sera nommée <<TestsGestionParcs>>. Cette classe décline plusieurs méthodes de tests
+		  qui couvre les différents cas de figure :
+		  
+		  	** Accès à l'écran de gestion des parcs
+		  	
+		  	** Création d'un parc : différent cas de figure abordé : 
+		  	création ok, création en erreur, annulation de création, création partielle 
+		  	
+		  	** Modification d'un parc : modification ok, modification en erreur, annulation de modification
+		  	
+		  	** Suppression d'un parc : suppression ok, suppression en erreur, annulation de suppression
+		  	
+		  	** Consultation d'un parc
+		  	
+		  	** Tri sur les parcs
+		  	
+		  	** Droits sur les parcs
+
+		<<Liste des méthodes de la classe de test : TestsGestionParcs>>
+
+[images/outline_class_test.jpg]
+
+
+		* Faire l'acquisition du test depuis Firefox et l'IDE Sélénium (réalisé avec Firefox 8)
+
+		<<Exemple de l'acquisition du test de création d'un parc>>	
+
+[images/acquisition_test_parc.jpg]
+
+		
+		* Après acquisition, il faut exporter le code au format Java. Plusieurs possibilités sont offertes. Tout d'abord il
+			faut choisir le framework de test Junit4. Ensuite le choix va dépendre du type d'IHM :
+			
+				** Les IHMs comportent des frames HTML, il faut utiliser une génération de code java en mode RC (Remote Control).
+				(Export utilisé pour l'exemple)
+				
+				** Les IHMs ne contient pas de frame, il est possible d'utiliser WebDriver.
+
+				<<Code Généré via l'export de Sélénium IDE : Mode Java Junit4 / Remote Control>>
+				
++------------------------------------------------------------------------------------------------------------+
+package com.example.tests;
+
+import com.thoughtworks.selenium.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import java.util.regex.Pattern;
+
+public class TestParcRC {
+	private Selenium selenium;
+
+	@Before
+	public void setUp() throws Exception {
+		selenium = new DefaultSelenium("localhost", 4444, "*chrome", "http://localhost:8080/");
+		selenium.start();
+	}
+
+	@Test
+	public void testParcRC() throws Exception {
+		selenium.open("/index.jsp?logout=true");
+		selenium.selectFrame("login");
+		selenium.click("id=buttonUserLogin");
+		selenium.waitForPageToLoad("30000");
+		selenium.selectWindow("name=menu");
+		selenium.click("//td[2]/div/span");
+		selenium.click("//div[@id='listTransaction_1']/div[2]/table/tbody/tr[17]/td[2]/div");
+		selenium.selectFrame("relative=up");
+		selenium.selectFrame("main");
+		selenium.click("id=ecwButtonId");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("id=codeParc", "CMA");
+		selenium.type("id=libelleParc", "PARC CMA");
+		selenium.click("id=validate");
+		selenium.waitForPageToLoad("30000");
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		selenium.stop();
+	}
+}	
++----------------------------------------------------------------------------------------------------------+		  
+
+				<<Code Généré via l'export de Sélénium IDE : Mode Java Junit4 / WebDriver>>
+				
+				On remarque que dans ce cas l'accès au frame n'est pas supporté. WebDriver s'inscrit dans une démarche
+				de test d'IHMs modernes, utilisant les DIV et non les Frames.
+				
++------------------------------------------------------------------------------------------------------------+
+package com.example.tests;
+
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class TestParcWebDriver {
+  private WebDriver driver;
+  private String baseUrl;
+  private boolean acceptNextAlert = true;
+  private StringBuffer verificationErrors = new StringBuffer();
+
+  @Before
+  public void setUp() throws Exception {
+    driver = new FirefoxDriver();
+    baseUrl = "http://localhost:8080/";
+    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+  }
+
+  @Test
+  public void testParcWebDriver() throws Exception {
+    driver.get(baseUrl + "/index.jsp?logout=true");
+    // ERROR: Caught exception [ERROR: Unsupported command [selectFrame | login | ]]
+    driver.findElement(By.id("buttonUserLogin")).click();
+    // ERROR: Caught exception [ERROR: Unsupported command [selectWindow | name=menu | ]]
+    driver.findElement(By.xpath("//td[2]/div/span")).click();
+    driver.findElement(By.xpath("//div[@id='listTransaction_1']/div[2]/table/tbody/tr[17]/td[2]/div")).click();
+    // ERROR: Caught exception [ERROR: Unsupported command [selectFrame | relative=up | ]]
+    // ERROR: Caught exception [ERROR: Unsupported command [selectFrame | main | ]]
+    driver.findElement(By.id("ecwButtonId")).click();
+    driver.findElement(By.id("codeParc")).clear();
+    driver.findElement(By.id("codeParc")).sendKeys("CMA");
+    driver.findElement(By.id("libelleParc")).clear();
+    driver.findElement(By.id("libelleParc")).sendKeys("PARC CMA");
+    driver.findElement(By.id("validate")).click();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    driver.quit();
+    String verificationErrorString = verificationErrors.toString();
+    if (!"".equals(verificationErrorString)) {
+      fail(verificationErrorString);
+    }
+  }
+
+  private boolean isElementPresent(By by) {
+    try {
+      driver.findElement(by);
+      return true;
+    } catch (NoSuchElementException e) {
+      return false;
+    }
+  }
+
+  private boolean isAlertPresent() {
+    try {
+      driver.switchTo().alert();
+      return true;
+    } catch (NoAlertPresentException e) {
+      return false;
+    }
+  }
+
+  private String closeAlertAndGetItsText() {
+    try {
+      Alert alert = driver.switchTo().alert();
+      String alertText = alert.getText();
+      if (acceptNextAlert) {
+        alert.accept();
+      } else {
+        alert.dismiss();
+      }
+      return alertText;
+    } finally {
+      acceptNextAlert = true;
+    }
+  }
+}
++------------------------------------------------------------------------------------------------------------+
+
+
+				<<Autre exemple d'export de Sélénium IDE : Mode Java Junit4 / WebDriver>>
+				
+				Dans cet exemple, le portail PSA est utilisé pour faire le test IHM et l'export WebDriver. Il n'
+				y a pas d'erreur dans l'export car le site ne comporte pas de frame. 
+	
++------------------------------------------------------------------------------------------------------------+
+package com.example.tests;
+
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class TestPortailWebDriver {
+  private WebDriver driver;
+  private String baseUrl;
+  private boolean acceptNextAlert = true;
+  private StringBuffer verificationErrors = new StringBuffer();
+
+  @Before
+  public void setUp() throws Exception {
+    driver = new FirefoxDriver();
+    baseUrl = "http://portail.inetpsa.com/";
+    driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+  }
+
+  @Test
+  public void testPortailWebDriver() throws Exception {
+    driver.get(baseUrl + "/poe/html/static/Accueil.html#");
+    driver.findElement(By.cssSelector("u")).click();
+    assertEquals("Comm'Net", driver.getTitle());
+    driver.findElement(By.cssSelector("img[alt=\"Résultats| Groupe\"]")).click();
+    driver.findElement(By.linkText("Résultats commerciaux")).click();
+    driver.findElement(By.cssSelector("span.txt_black_12 > a > span.txt_black_12")).click();
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    driver.quit();
+    String verificationErrorString = verificationErrors.toString();
+    if (!"".equals(verificationErrorString)) {
+      fail(verificationErrorString);
+    }
+  }
+
+  private boolean isElementPresent(By by) {
+    try {
+      driver.findElement(by);
+      return true;
+    } catch (NoSuchElementException e) {
+      return false;
+    }
+  }
+
+  private boolean isAlertPresent() {
+    try {
+      driver.switchTo().alert();
+      return true;
+    } catch (NoAlertPresentException e) {
+      return false;
+    }
+  }
+
+  private String closeAlertAndGetItsText() {
+    try {
+      Alert alert = driver.switchTo().alert();
+      String alertText = alert.getText();
+      if (acceptNextAlert) {
+        alert.accept();
+      } else {
+        alert.dismiss();
+      }
+      return alertText;
+    } finally {
+      acceptNextAlert = true;
+    }
+  }
+}
++------------------------------------------------------------------------------------------------------------+
+
+		* Après l'export il faut intégrer le fragment de code dans la classe de test.
+		
+*------------------------------------------------------------------------------------------------------------+
+|	<<Récupération du contenu de la méthode testParcRC()>>                                                   |
+*------------------------------------------------------------------------------------------------------------+
+
++------------------------------------------------------------------------------------------------------------+
+		selenium.open("/index.jsp?logout=true");
+		selenium.selectFrame("login");
+		selenium.click("id=buttonUserLogin");
+		selenium.waitForPageToLoad("30000");
+		selenium.selectWindow("name=menu");
+		selenium.click("//td[2]/div/span");
+		selenium.click("//div[@id='listTransaction_1']/div[2]/table/tbody/tr[17]/td[2]/div");
+		selenium.selectFrame("relative=up");
+		selenium.selectFrame("main");
+		selenium.click("id=ecwButtonId");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("id=codeParc", "CMA");
+		selenium.type("id=libelleParc", "PARC CMA");
+		selenium.click("id=validate");
+		selenium.waitForPageToLoad("30000");	
++------------------------------------------------------------------------------------------------------------+
+
+*------------------------------------------------------------------------------------------------------------+
+|	<<et intégration dans le code java de la classe TestsGestionParcs>>                                                   |
+*------------------------------------------------------------------------------------------------------------+
+
++------------------------------------------------------------------------------------------------------------+
+	private void creation_parc() throws Exception {
+		selenium.open("/index.jsp?logout=true");
+		selenium.selectFrame("login");
+		selenium.click("id=buttonUserLogin");
+		selenium.waitForPageToLoad("30000");
+		selenium.selectWindow("name=menu");
+		selenium.click("//td[2]/div/span");
+		selenium.click("//div[@id='listTransaction_1']/div[2]/table/tbody/tr[17]/td[2]/div");
+		selenium.selectFrame("relative=up");
+		selenium.selectFrame("main");
+		selenium.click("id=ecwButtonId");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("id=codeParc", "CMA");
+		selenium.type("id=libelleParc", "PARC CMA");
+		selenium.click("id=validate");
+		selenium.waitForPageToLoad("30000");
+	}
++------------------------------------------------------------------------------------------------------------+
+
+	* Cette approche, bien que fonctionnant, n'est pas optimale. La préconisation est de créer des méthodes 
+	génériques afin de réutiliser le code. Il est également intéressant d'utiliser les méthodes génériques
+	misent à disposition dans TSF qui mappent les méthodes Sélénium en y ajoutant la possibilité de switcher 
+	entre le mode RC ou le mode WebDriver. <<Voir l'exemple ci-dessous>>
+
++------------------------------------------------------------------------------------------------------------+
+	/**
+	 * parc creation tests:
+	 * 		- successful creation (code: P1, libellé: LIBELLE P1)
+	 * 		- failure creation because of a double (code: P1, libellé: LIBELLE P1)
+	 * 		- creation without any code (libellé: LIBELLE P1)
+	 * 		- creation without any libellé (code: P1)
+	 * @throws Exception the exception
+	 */
+	@Test
+	public void test_parcs_cas2() throws Exception {
+		initDatabaseContent_test_cas1();
+		LOGGER.info("Execution des cas de tests de création de parcs");
+		TSFECWSeleniumUtils.connection("//button[@id='buttonUserLogin']");	
+		enterTransaction();
+		cancel_creation_parc();
+		access_creation_parc();
+		creation_parc_sans_code();
+		creation_parc_error_code();
+		creation_parc_sans_libelle();
+		creation_parc_error_libelle();
+		creation_parc_doublon();
+		creation_parc("P1", "LIBELLE P1");
+		screenshot();
+		TSFECWSeleniumUtils.disconnection();
+	}
+	
+	/**
+	 * creation parc without code (failure)
+	 *
+	 * @throws Exception the exception
+	 */
+	private void creation_parc_sans_code() throws Exception {
+		seleniumActions.type("//input[@id='codeParc']", "");
+		seleniumActions.type("//input[@id='libelleParc']", "");
+		seleniumActions.click("//button[@id='validate']");
+		// checking message displayed
+		if (!seleniumActions.isTextPresent("Le parc doit être renseigné")) {
+			screenshot();
+			fail("Erreur : Création d'un parc sans renseigner de code");
+		}
+		screenshot();
+	}
+	
+	/**
+	 * Create a parc.
+	 *
+	 * @param code the code
+	 * @param libelle the libelle
+	 * @throws Exception the exception
+	 */
+	private void creation_parc(String code, String libelle) throws Exception {
+		seleniumActions.type("//input[@id='codeParc']", code);
+		seleniumActions.type("//input[@id='libelleParc']", libelle);
+		screenshot();
+		seleniumActions.click("//button[@id='validate']");
+		// checking creation in DB
+		String actuelle = Dates.date("dd/MM/yyyy");
+		String date_db = null;
+		String libelle_db = null;
+		TSFECWSeleniumUtils.waitElementPresent("//div[@id='tabParcCombo']");
+		ResultSet res = TestHSql.select_parc();
+		boolean trouve = false;
+		while (res.next()) {
+			if(res.getString("CODE").equals(code)){
+				trouve = true;
+				date_db = Dates.convert(res.getString("DATE_CREATION"));
+				libelle_db = res.getString("LIBELLE");
+			}
+		}
+		if (!trouve) fail("Erreur de creation du parc: le parc n'est pas présent en base");
+		screenshot();
+		String libelle_creation = seleniumActions.getText("//div[@id='tabParcCombo']/div[contains(@class,  'ecwTableBody')]/table/tbody/tr[contains(@ecwKeyVal0,'"+code+"')]/td[2]");
+		if (!actuelle.equals(date_db)) {
+			fail("Erreur de création du parc: la date de création en base ne correspond pas à la date actuelle");
+		}
+		if (!libelle_creation.equalsIgnoreCase(libelle_db)) {
+			fail("Erreur de création du parc: le libellé n'est pas correct en base");
+		}
+		// checking creation in IHM
+		screenshot();
+		// checking message displayed
+		if (!seleniumActions.isTextPresent("Création effectuée")) {
+			screenshot();
+			fail("Erreur de création du parc : "+seleniumActions.getText("//div[@id=\"EcwMessageBar\"]"));
+		}
+		// checking displayed data
+		// name, label
+		if (!seleniumActions.isTextPresent(code)) {
+			screenshot("Erreur de création du parc: le parc n'est pas affiché");
+		}
+		if (!libelle_creation.equalsIgnoreCase(libelle)) {
+			screenshot();
+			fail("Erreur de création du parc: les données affichées ne correspondent pas à celles entrées");
+		}
+	}	
+	....
+	....
+	....
++------------------------------------------------------------------------------------------------------------+
+
+		* Pour plus de détail sur les méthodes disponibles : {{{../tsf-core/apidocs/index.html} voir la javadoc CORE.}}
+		
+<<Remarque>>
+	
+	Actuellement la réalisation des tests IHMs est sous-traitée au plateau de développement STIM de chine.
+	Ils ont au fil du temps développé de solides connaissances de l'outil Sélénium et dans la réalisation de tests IHMs.
+	Aujourd'hui l'utilisation du plugin Sélénium IDE est principalement dédiée à la récupération des noms et chemins
+	des objets HTML. L'écriture des tests est nettement plus générique permettant une meilleure maintenance en cas 
+	d'évolution de l'IHM.
+	
+
+
+{Exécution des tests IHMs}
+
+	Une fois la classe de test créée, le but est d'exécuter cette classe comme n'importe quelle classe junit. Pour ce
+	faire il faut suivre les points suivants :
+	
+		* Commencer par créer une simple classe TestMain dans le projet, sous run/test/tsf/ par exemple.
+		
+		* Créer des méthodes d'initialisations de services ou de base de données si nécessaire
+		
+		* Créer des méthodes <<public static Test suite()>> contenant :
+		
+			** les initialisations si nécessaire
+			
+			** la création d'un nouveau TestSuite
+			
+			** Ajouter la commande <<suite.addTest(new JUnit4TestAdapter(TSFStartNavigateur.class));>> permettant de démarrer Selenium
+			
+			** Ajouter la classe à tester <<suite.addTest(new JUnit4TestAdapter(TestsGestionParcs.class));>>
+			
+			** Une fois toutes les classes à tester listées ajouter la commande <<suite.addTest(new JUnit4TestAdapter(TSFStopNavigateur.class));>> 
+			permettant de stopper Sélénium.
+
+	<<Exemple de classe Main pour les tests>>
+			
++------------------------------------------------------------------------------------------------------------+		
+package com.inetpsa.q3p.topologie.test.tsf;
+
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import com.inetpsa.ltp.PyramideResource;
+import com.inetpsa.ltp.util.LTPTestCase;
+import com.inetpsa.tsf.selenium.utils.TSFStartNavigateur;
+import com.inetpsa.tsf.selenium.utils.TSFStopNavigateur;
+
+public class TestMain {	
+
+	/**
+	 * Init des services.
+	 * si nécessaire
+	 */
+	private static void initServices(){
+		...
+		...
+		...	
+		// référencer le fichier de configuration TSF pour sélénium
+		System.setProperty("property.path", "/run/com/inetpsa/q3p/topologie/test/tsf/tsfSelenium.properties");		
+	}
+	
+	/**
+	 * Init base.
+	 * si nécessaire
+	 */
+	private static void initBase(){
+		...
+		...
+		...		
+	}
+	
+	public static Test suite() {
+		initServices();		
+		initBase()
+		TestSuite suite = new TestSuite();		
+		suite.addTest(new JUnit4TestAdapter(TSFStartNavigateur.class));
+		suite.addTest(new JUnit4TestAdapter(TestsGestionParcs.class));
+		....
+		//Autre classe de test si nécessaire
+		....
+		suite.addTest(new JUnit4TestAdapter(TSFStopNavigateur.class));
+		return suite;
+	}
+}
++------------------------------------------------------------------------------------------------------------+			
+				
+				
+		* Créer un fichier <<tsfSelenium.properties>> contenant la configuration d'exécution des tests 
+		(toujours sous run/test/tsf/ par exemple)
+		
++------------------------------------------------------------------------------------------------------------+		
+#browser name - nom du browser à utiliser : firefox, chrome, iexplore  
+browser=firefox
+#time to wait between selenium actions - temps d'attente entre deux commandes 
+#(Augmenter si exécuté sur une machine peu performante) 
+timeToWait=200
+#Selenium time out - temps avant timeout sélénium
+timeOut=30000
+#Selenium server(true: use webdriver, false: use selenium1) - choix entre mode RC = false et WebDriver = true
+isWebDriver=false
+#Selenium url - url de l'application (local ou sur un cdd / preprod)
+url=http://localhost:8080/
+#Selenium browse path - le chemin du navigateur dans le cas où le poste possède plusieurs versions du navigateur
+#Example: C:/Program Files/Mozilla Firefox/firefox.exe
+browserPath=		
++------------------------------------------------------------------------------------------------------------+
+						
+		* Démarrer votre application (back et front end), sur votre poste si les tests se font en local 
+		
+		* Lancer les tests en faisant un run as JunitTest
+		
+		* Le résultat des tests est visible dans la vue JUnit d'éclipse
+		
+		[]
+
+[images/resultat_tsf.jpg]		
+
+		
+
+		  
+
+
+
+

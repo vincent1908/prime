@@ -1,0 +1,300 @@
+                                    ------
+                                 Principe Selenium
+                                    ------
+                                  C. MATRANGA
+                                    ------
+                                  30/09/2013
+
+[images/logo_tsf_mini_v1.jpg] 
+
+L'outil Sélénium
+
+* Introduction à Selenium
+
+	Selenium est une suite d’outils permettant de réaliser l’automatisation de tests d’IHM d’applications web. 
+	Selenium fournit un large panel de fonctions exactement adaptées aux tests d’applications web. 
+	Ces fonctions sont flexibles, elles permettent en particulier de localiser les éléments graphiques et 
+	de comparer le résultat attendu au résultat obtenu.
+	Une des fonctions les plus intéressantes de Selenium réside dans la possibilité d’exécuter les tests sur 
+	différentes plateformes et avec différents navigateurs.
+	
+	Selenium est composé de trois outils principaux chacun ayant un rôle précis dans le développement de tests d’IHM.
+	TSF intègre la nouvelle version de Sélénium (version 2) qui apporte une évolution majeur dans la communication avec
+	le navigateur : <<WebDriver>>
+
+=======================================================================
+
+* Selenium IDE
+
+	Selenium IDE se présente sous la forme d’un plugin Firefox. Il fournit une interface simple pour développer et 
+	lancer des cas de tests individuels ou des suites de tests complètes. Selenium IDE possède une fonctionnalité
+	d’enregistrement. Les actions de l’utilisateur sont enregistrées et peuvent être ensuite rejouées. Une fois 
+	enregistrés, les tests peuvent être convertis dans les langages les plus communs pour la programmation Web 
+	(C#, Python, Java, Ruby, Perl, Php).
+	
+	Le plugin rajoute également des fonctions au menu contextuel de Firefox (clic droit). 
+	L’utilisateur a alors accès à une liste d’assertions ou de vérifications pour la zone sélectionnées. 
+	Selenium IDE offre également la possibilité d’éditer les cas de tests enregistrés pour plus de précision.
+	
+[images/selenium_ide_1.jpg]
+
+	<<Selenium IDE>>
+
+
+	La barre d’outils contient les boutons de contrôle d’exécution des cas de test.
+	
+[images/selenium_ide_barre.jpg]
+
+	<<Selenium IDE – Barre d’outils>>
+
+
+	Les fonctions sont les suivantes :
+
+*--------------------------------------------------+
+| Contrôle de la vitesse d’exécution des tests     |
+*--------------------------------------------------+
+
+[images/selenium_ide_barre_1.jpg]
+
+*--------------------------------------------------+
+| Exécution complète de la suite de tests          | 
+*--------------------------------------------------+
+
+[images/selenium_ide_barre_2.jpg]
+
+*--------------------------------------------------+
+| Exécution du test courant                        | 
+*--------------------------------------------------+
+
+[images/selenium_ide_barre_3.jpg]
+
+*--------------------------------------------------+
+| Pause / Reprise de la suite de tests             |
+*--------------------------------------------------+
+
+[images/selenium_ide_barre_4.jpg]
+
+*--------------------------------------------------+
+| Exécution de la suite de tests en mode pas à pas |
+*--------------------------------------------------+
+
+[images/selenium_ide_barre_5.jpg]
+
+*--------------------------------------------------+
+| Groupe de Séquence répétitive	                   |
+*--------------------------------------------------+
+
+[images/selenium_ide_barre_6.jpg]
+
+*--------------------------------------------------+
+| Enregistrement des actions utilisateur	       |
+*--------------------------------------------------+
+
+[images/selenium_ide_barre_7.jpg]
+
+
+
+	Après enregistrement, les commandes se trouvent dans le panneau principal de l’interface. 
+
+[images/selenium_ide_2.jpg]
+
+	<<Sélénium IDE - Interface après enregistrement>>
+
+
+	Le panneau principal contient deux onglets. Le premier onglet (Table) permet de visualiser 
+	les commandes et leurs paramètres.
+
+[images/selenium_ide_3.jpg]
+
+	<<Selenium IDE - Commandes (onglet Table)>>
+
+	
+	Les champs Commande, Cible et Valeur donnent les informations sur la commande sélectionnée. 
+	Ces champs peuvent être modifiés.
+	
+[images/selenium_ide_5.jpg]
+
+	<<Selenium IDE - Selenium IDE - Editeur de commandes>>
+
+	
+	Le bouton « Rechercher » permet de localiser un élément sur la page web.
+
+[images/selenium_ide_6.jpg]
+
+	<<Selenium IDE - Fonction de recherche>>
+
+
+	Le second onglet (Source) permet d’afficher les commandes Selenium au format voulu. 
+	Par défaut les commandes sont affichées en HTML mais elles peuvent être changées pour 
+	un langage de programmation tel que Java ou C#.
+
+[images/selenium_ide_4.jpg]
+
+	<<Selenium IDE - Commandes (onglet Source)>>
+
+
+	<<Principe d'intégration>>
+	
+		Ce paragraphe présente l'approche basique d'une intégration du code Sélénium dans un environnement
+		de développement. TSF va plus loin en proposant un ensemble de méthode facilitant 
+		l'intégration des tests.{{{./guide_dev_tsf.html}Voir Guide de dev TSF}}
+
+		A ce stade, le code produit peut être exécuté à partir de l’interface graphique. 
+		Pour aller plus loin, il faut prendre en considération les points suivants :
+		
+		* exécution du test dans d’autres navigateurs : en effet, le plugin Selenium IDE permet d’exécuter 
+		le test uniquement sous Firefox, mais il est nécessaire de vérifier que l’application est 
+		compatible avec d’autres navigateurs tels qu’Internet Explorer ou Safari.
+		
+		* gestion de nombreux tests : l’interface graphique n’est pas viable pour l’exécution de 
+		plusieurs centaines de tests
+		
+		* tests intégrés : jouer un test à partir de l’interface graphique est pratique lors de la 
+		mise au point du test. En revanche, cela n’est plus praticable lorsque les tests d’interface 
+		doivent être intégrés aux autres tests de l’application (tests unitaires, etc.)
+		
+		* modification et déclinaison des tests : l’interface ne permet pas de jouer le même test 
+		avec différents paramètres, la seule solution serait de modifier le test, puis de le rejouer 
+		et cela plusieurs fois de suite.
+		
+		L’étape d’intégration est simplifiée étant donné que Selenium est capable de générer un test JUnit.
+		Il suffit de cliquer sur le menu <<Fichier>> de Sélénium IDE et de faire <<Exporter le test sous>>.
+		Plusieurs possibilité vous sont offertes 
+				  
+[images/selenium_ide_7.jpg]
+
+	<<Selenium IDE - Exporter le test sous>>
+
+		Détail sur les exports Java:
+		
+*-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+| Java / Junit 4 / WebDriver        | Export sous la forme d'une classe java utilisant le mode WebDriver (API de communication spécifique à chaque navigateur)et le framework Junit 4 |
+*-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+| Java / Junit 4 / WebDriver backed | Export sous la forme d'une classe java utilisant le mode WebDriver Compatible (si les tests ont été écris pour RC) et le framework Junit 4      |
+*-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+| Java / Junit 4 / Remote Control   | Export sous la forme d'une classe java utilisant le mode RC de sélénium (fonctionne avec un server sélénium RC) et le framework de test Junit 4 |
+*-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+| Java / Junit 3 / Remote Control   | Export sous la forme d'une classe java utilisant le mode RC de sélénium et le framework de test Junit 3 (pour compatibilité)                    |
+*-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+	
+| Java / TestNG  / Remote Control   | Export sous la forme d'une classe java utilisant le mode RC de sélénium et le framework de test TestNG                                          |
+*-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+
+		<<Exemple d'exports:>>
+
+[images/selenium_export_webdriver.jpg]
+
+		<<Selenium IDE - Code java exporté en mode Junit4 - WebDriver>>
+
+
+[images/selenium_export_rc.jpg]
+
+		<<Selenium IDE - Code java exporté en mode Junit4 - Remote Control>>
+
+
+	** Intégration du code à un projet Eclipse
+	
+		La partie intégration du code généré dans l'environnement de développement est abordé 
+		ici : {{{./guide_dev_tsf.html}Guide de développement avec TSF}}.
+
+
+=======================================================================
+
+* Selenium RC (Remote Control)
+
+	Selenium RC fournit une API et une librairie propre à chaque langage supporté par Selenium. Cela permet de 
+	développer les tests en utilisant un langage de programmation haut-niveau. 
+	Selenium RC se comporte comme un serveur permettant de contrôler un navigateur web local ou distant. 
+	Il fonctionne comme un proxy HTTP pour les requetes Web.  
+	
+[images/selenium_rc_1.jpg]
+
+		<<Selenium RC - Remote Control>>
+			
+	Le serveur Selenium reçoit les commandes du programme de test, les interprète et rapporte les résultats 
+	du test. Selenium RC embarque également Selenium Core qui est un programme Java qui interprète et 
+	execute les commandes Selenium en utilisant l’interpréteur JavaScript du navigateur.
+	Le serveur reçoit les commandes Selenium grâce à de simples requêtes GET/POST HTTP. Ce qui signifie 
+	que n’importe quel langage pouvant envoyer des requêtes HTTP peut être utilisé pour l’automatisation 
+	des tests Selenium.
+	
+	Selenium RC fournit également une librairie client propre à chaque langage de programmation. La 
+	librairie client prend une commande Selenium et la transmet au serveur pour que ce dernier l’exécute. 
+	Le serveur transmet en retour le résultat de la commande à la librairie. La réponse peut alors être 
+	interprétée par le programme comme un succès ou un echec. 
+
+=======================================================================
+			
+* Selenium WebDriver
+	
+	Le plus grand changement dans sélénium 2.0 a été l'ajout de l'API WebDriver. Elle permet de piloter
+	un navigateur de manière natif, et ce en local ou en distant via Selenium Server. elle marque un bond 
+	en avant en termes d'automatisation du navigateur.
+		
+	Sélénium WebDriver reprend le rôle de Sélénium RC, en réintégrant les liaisons 1.x du module RC et en ajoutant
+	également les primitives spécifiques de contrôle des navigateurs. "WebDriver" est parfois référencé comme 
+	Selenium 2 (Sélénium 1.0 + WebDriver = Sélénium 2.0).
+    
+	    * WebDriver est conçu comme une interface de programmation simple et plus concise, permettant de résoudre
+	     certaines limitations de l'API Selenium-RC.
+	    
+	    * WebDriver est une API orientée objet nettement plus compact par rapport à Sélénium 1.0
+	  	  
+	    * Il pilote le navigateur de manière plus efficace et surpasse les limitations de sélénium 1.x, qui
+	    limitait la couverture de test fonctionnel, dans des cas tels que le "upload" ou le "download", les
+	    pop-ups ou les fênetres de dialogue.		
+	
+	WebDriver est le nom de l'interface standard pour l'écriture des tests en Java, cependant des classes 
+	spécifiques aux navigateurs sont mises à disposition :
+	
+*------------------------+
+| AndroidDriver          |
+*------------------------+
+| ChromeDriver           |
+*------------------------+
+| EventFiringWebDriver   |
+*------------------------+
+| FirefoxDriver          |
+*------------------------+
+| HtmlUnitDriver         |
+*------------------------+
+| InternetExplorerDriver |
+*------------------------+
+| IPhoneDriver           |
+*------------------------+
+| PhantomJSDriver        |
+*------------------------+
+| RemoteWebDriver        |
+*------------------------+
+| SafariDriver           |
+*------------------------+
+
+
+=======================================================================
+			
+* Selenium Grid
+	
+	Selenium Grid permet à la solution Selenium RC / WebDriver d’échelonner les tests devant être exécutés dans 
+	différents environnements (OS et navigateur). Selenium Grid rend la solution Selenium 2.0 scalable. 
+	
+	Au démarrage, chacune des configurations doit être enregistrée auprès du Hub Grid. Lorsque les tests 
+	sont lancés, ils sont redirigés par le Hub vers un serveur Selenium RC / WebDriver qui va lancer 
+	le navigateur et exécuter le test, ceci permet également d’exécuter les tests en parallèles.
+	
+	Avec la sortie de Selenium 2.0, le serveur Selenium a maintenant intégré la fonctionnalité Grid et 
+	n'est plus un module complémentaire.
+
+[images/selenium_grid_1.jpg]
+
+		<<Selenium RC - Configuration classique de Selenium (cas RC)>>
+	
+	
+[images/selenium_grid_2.jpg]
+
+		<<Selenium RC - Configuration avec Selenium Grid (cas RC)>>
+
+
+* Allez plus loin
+
+	{{{http://www.seleniumhq.org/}Documentation Sélénium}}
+	
+	 

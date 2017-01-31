@@ -1,0 +1,211 @@
+                                    ------
+                   Guide of installation and configuration TSF
+                                    ------
+                                  C. MATRANGA
+                                    ------
+                                  30/09/2014
+
+
+[../images/logo_tsf_mini_v1.jpg] 
+
+Guide of installation of component TSF
+
+ * <<{{{Introduction}
+  Introduction}}>>
+
+ * <<{{{Prerequisites}
+   Prerequisites}}>>
+
+ * <<{{{Installation of component TSF}
+	Installation of component TSF}}>>
+
+ * <<{{{Installation of plugin Selenium IDE}
+	Installation of plugin Selenium IDE}}>>
+
+
+{Introduction}
+
+	Installation of component TSF takes place through Maven via POM configuration. The TSF component 
+	will automatically take the dependencies of framework Selenium in the project configuration.
+
+
+
+{Prerequisites}
+
+	* Development environment :
+ 
+		* Eclipse development tool
+	
+		* An environment configured with Maven :  Client JIP PSA
+
+
+
+{Installation of component TSF}
+
+	Installation of component passes through the file configuration <<pom.xml>> of the project. The first 
+	thing to do is to declare a property <<Version>> for example :
+	
++---------------------------------------------+
+	<versionTSF>1.0.0</versionTSF>
++---------------------------------------------+
+
+	This property allow to simplify the management of TSF component version.
+
+[../images/config_pom_tsf_1.jpg]
+
+	<<Configuration of the property TSF Version>>
+
+
+	Then add the block TSF dependency. Two possible approaches.
+	 
+	* Approach 1 :
+	
+		The project has several modules including a module <<root>> and a module <<webapp>> or <<webtest>>
+		and in this case it's better to declare the dependency in pom.xml of the module <<root>> :
+	 
++--------------------------------------------------------------------------------+	
+	<dependencyManagement>                                
+		<dependencies>                                    
+		...                                               
+		...                                               
+			<dependency>                                  
+				<groupId>com.inetpsa.tsf00</groupId>      
+				<artifactId>tsf-core</artifactId>         
+				<version>${versionTSF}</version>          
+				<scope>provided</scope>                   
+			<dependency>                                  
+		...                                               
+		...                                               
+		<dependencies>                                    
+	</dependencyManagement>                               
++--------------------------------------------------------------------------------+
+
+
+	and then add the dependency in the module <<webapp>> or module <<webtest>>
+	
++--------------------------------------------------------------------------------+		
+	<dependencies>
+		...
+		...
+		<dependency>
+  			<groupId>com.inetpsa.tsf00</groupId>
+  			<artifactId>tsf-core</artifactId>
+		</dependency>
+		...
+		...
+	</dependencies>
++--------------------------------------------------------------------------------+	
+
+
+
+	* Approach 2 :
+	
+		Declare the dependency only in the module in which the tests IHMs will be created
+	
++--------------------------------------------------------------------------------+	                   
+		<dependencies>                                    
+		...                                               
+		...                                               
+			<dependency>                                  
+				<groupId>com.inetpsa.tsf00</groupId>      
+				<artifactId>tsf-core</artifactId>         
+				<version>${versionTSF}</version>          
+				<scope>provided</scope>                   
+			<dependency>                                  
+		...                                               
+		...                                               
+		<dependencies>
++--------------------------------------------------------------------------------+	
+
+
+ 	Once the pom.xml edited, simply run a Maven command to get Jar required to create HMIs tests.
+ 	
+*--------------------------------------------------------------------------------+		
+| mvn -U dependency:resolve														 |
+*--------------------------------------------------------------------------------+	 	
+
+		or
+
+*--------------------------------------------------------------------------------+		
+| mvn clean install -U -Dmaven.test.skip=true -e								 |
+*--------------------------------------------------------------------------------+	 	
+
+
+	It's possible to run this command directly from the Eclipse environment development.
+	
+[../images/eclipse_env_1.jpg]
+
+	<<Configuration Eclipse - Command Maven>>	
+	 
+ 
+[../images/eclipse_env_2.jpg]
+
+	<<Configuration Eclipse - Executable Maven>>		 
+
+
+	Now Java packages (JAR) are in your local Repository, just need to refer them in the classpath project in which we will
+	create HMI tests. Maven will let you update one more time the classpath automatically.
+
+*--------------------------------------------------------------------------------+		
+| mvn eclipse:clean eclipse:eclipse 										     |
+*--------------------------------------------------------------------------------+	 
+
+[../images/eclipse_env_3.jpg]
+
+	<<Configuration Eclipse - Classpath realized via Maven>>		
+
+
+
+ATTENTION
+
+	In some cases, if the project uses Jars Xerces or Xalan, there may be some conflicts because Selenium also 
+	references these Jars. To avoid this problem it is possible to exclude these archives as follows:
+
++--------------------------------------------------------------------------------+	                   
+		<dependencies>                                    
+		...                                               
+		...                                               
+			<dependency>                                  
+				<groupId>com.inetpsa.tsf00</groupId>      
+				<artifactId>tsf-core</artifactId>         
+				<version>${versionTSF}</version>          
+				<scope>provided</scope>                   
+			<dependency>
+			
+			<exclusions>
+  				<exclusion>
+		  			<groupId>xalan</groupId>
+		  			<artifactId>xalan</artifactId>
+  				</exclusion>
+  				<exclusion>
+		  			<groupId>xerces</groupId>
+		  			<artifactId>xercesImpl</artifactId>
+  				</exclusion>
+  			</exclusions>
+  			                                  
+		...                                               
+		...                                               
+		<dependencies>
++--------------------------------------------------------------------------------+	
+
+
+{Installation of plugin Selenium IDE}
+
+	To perform the tests in a simple manner, it is necessary to install the plugin Selenium IDE. Actually
+	this plugin, available only in firefox, allows to capture in real-time the test performed by a user, 
+	and then allows to export this test in Java/JUnit format. To install the plugin you must take the 
+	following steps:
+	
+	* Installation via PSAV3
+	
+		Go to application <<Reflex>> from your Fan, select the entrance <<PSAV3 Software>> and take <<Selenium IDE 1.0.7.0>> from 
+		the list <<Choose software>>. The installation will be done directly on your firefox through an update of PSAV3.
+		
+[../images/install_selenium_ide_1.jpg]
+
+	<<Request to install the  plugin Selenium>>
+
+ 
+ 	For more information about the plugin Selenium IDE see the document: {{{./principe_selenium.html} Selenium Principle.}}
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+	<id>dist</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>../tsf-common/target</directory>
+			<outputDirectory>web/WEB-INF/lib/</outputDirectory>
+			<includes>
+				<include>tsf-common-*.jar</include>
+			</includes>
+			<excludes>
+				<exclude>tsf-common*-javadoc.jar</exclude>
+				<exclude>tsf-common*-sources.jar</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>../tsf-core/target</directory>
+			<outputDirectory>web/WEB-INF/lib/</outputDirectory>
+			<includes>
+				<include>tsf-core-*.jar</include>
+			</includes>
+			<excludes>
+				<exclude>tsf-core*-javadoc.jar</exclude>
+				<exclude>tsf-core*-sources.jar</exclude>
+			</excludes>
+		</fileSet>
+	</fileSets>
+</assembly>

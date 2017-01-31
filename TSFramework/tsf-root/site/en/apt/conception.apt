@@ -1,0 +1,57 @@
+                                   -------
+                                Conception TSF
+                                   -------
+                                 C. MATRANGA
+                                   -------
+                                  30/09/2013
+
+[../images/logo_tsf_mini_v1.jpg] 
+	
+TSF design
+
+	TSF is the result of feedback from HMIs tests performed by GPRO in recent years. It is the fruit of
+	collaboration between teams GPRO and APST. The purpose was to get a standalone component that can be 
+	integrated in any project unrelated with technical base (LTP / STS) and offering the services to
+	simplify the creation of HMIs tests with tool Selenium.
+	
+	
+	* TSF integrates the following elements :
+
+		** Management of Selenium RC and Webdriver
+		
+		** Adding the functionalities to simplify some technical aspects of Selenium
+			
+			*** Management of the timeout between the requests
+			
+			*** Automatic screenshots
+			
+			*** ...
+		
+		** Configuration of simplified tests (browsers options, timeout, etc.)
+			
+			*** Via a general configuration file
+			
+			*** Via annotations from the test classes
+
+		** Test report generator
+		
+		** Technical functions to simplify tests writing
+			
+			*** Emulation keyboards keys
+			
+			*** Check the status of a graphic object
+			
+			*** ...
+
+
+Class diagram 
+
+[../images/tsf_conception_1.jpg] 
+
+
+Test report
+
+[../images/tsf_conception_report.jpg] 
+
+
+

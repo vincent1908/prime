@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+	    <title>${indexTitle}</title>
+	      <link rel='stylesheet' type='text/css' href='resources/projectTester.css'/>
+		<script type='text/javascript' src='resources/projectTester.js'></script>
+	</head>
+	<body>
+	<div class="wrap">
+	    <div class="head" style="width:100%"><div class="row_head">Tests Selenium : ${indexTitle}</div></div>
+  		<div class="head" style="width:100%"><div class="row_head">Date of tests : ${ihmTestDate}</div></div>
+  		<div class="table" style="width:100%">
+  		#foreach($key in $testResult.keySet())
+		#set($className = $key)
+			<div class="row group">
+	  			<div class="cell_img"><a href=${key}.html><img src='resources/group.png' title='View Report' border='0'></img></a></div>
+	  			<div class="cell_img"><a href='javascript:showHideGroup(".$className");'><img border="0" title="Open Group Node" src="resources/open.png"></img></a></div>
+		  			<div class="cell">$key</div>
+		  			<div class="cell" style="width:100%"></div>
+		  			#set($scenarioPath = $testScenario.get($key))
+					#if($scenarioPath != '')
+						<div class="cell"><a href=${scenarioPath}.xml><img src='resources/script.png' border='0'/></a></div>
+						<div class="cell">&nbsp;1&nbsp;</div>
+					#else
+						<div class="cell"><img src='resources/script.png' border='0'/></div>
+						<div class="cell">&nbsp;0&nbsp;</div>
+					#end
+					#foreach($result in $testResult.get($key))
+					#set($tempIndex = $velocityCount - 1)
+						#if($testSuccess.get($key).get($tempIndex) != '0%&nbsp;(0)')
+							<div class="cell"><a href=${key}.html?show=success><img src='resources/success.png' border='0'/></a></div>
+							<div class="cell">&nbsp;$testSuccess.get($key).get($tempIndex)&nbsp;</div>
+						#else
+							 <div class="cell">&nbsp;</div>
+							 <div class="cell">&nbsp;</div>
+						#end
+						#if($testFailure.get($key).get($tempIndex) != '0%&nbsp;(0)')
+							<div class="cell"><a href=${key}.html?show=failure><img src='resources/failure.png' border='0'/></a></div>
+							<div class="cell">&nbsp;$testFailure.get($key).get($tempIndex)&nbsp;</div>
+						#else
+							 <div class="cell">&nbsp;</div>
+							 <div class="cell">&nbsp;</div>
+						#end
+					#end
+				 	<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell"><img src='resources/time.png' border='0'/></div>
+					<div class="cell">$durationTime.get($key)</div>
+			</div>
+			#foreach($result in $testDataBase.get($className))	
+				#if($result!='') 
+					<div class='row'>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell" style="width:100%">$result</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					<div class="cell">&nbsp;</div>
+					</div>
+				#end	
+			#end
+			<style>.$className {display:none;}</style>
+			#foreach($result in $testCaseResult.get($className))
+			$result
+			#end
+		#end
+		</div>	
+	</div>
+	</body>
+</html>

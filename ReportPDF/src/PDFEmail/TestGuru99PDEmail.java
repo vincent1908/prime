@@ -20,6 +20,7 @@ import javax.mail.internet.MimeMultipart;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -54,7 +55,10 @@ public class TestGuru99PDEmail extends BaseClass {
 		Assert.assertTrue(true);
 	}
 	
-	
+	@AfterTest
+	public void closeB(){
+		driver.quit();
+	}
 	//After complete execution send pdf report by email
 	@AfterSuite
 	public void tearDown(){

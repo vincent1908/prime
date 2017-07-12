@@ -3,14 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="PDFEmail.TestGuru99PDEmail">
+      <class name="reporter.TestGuru99ForReporter">
         <methods>
-          <include name="testPDFReportOne"/>
-          <include name="tearDown"/>
-          <include name="testPDFReporTwo"/>
-          <include name="testPDFReportThree"/>
+          <include name="testReporterTwo"/>
         </methods>
-      </class> <!-- PDFEmail.TestGuru99PDEmail -->
+      </class> <!-- reporter.TestGuru99ForReporter -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -17,7 +17,7 @@ public class Guru99TakeScreenshot {
 		//goto url
 		driver.get("http://demo.guru99.com/V4/");
 		//Call take screenshot function
-		this.takeSnapShot(driver, "c://test.png");
+		Guru99TakeScreenshot.takeSnapShot(driver, "\\Users\\Gregoryvincent\\Documents\\Selenium\\test.png");
 		
 	}
 	

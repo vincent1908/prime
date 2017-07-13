@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
+import utils.TestBase;
+
 public class ReportTest extends TestBase{
 	
 	public static void main (String args[]) {

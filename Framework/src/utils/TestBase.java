@@ -38,9 +38,10 @@ public class TestBase {
 
 		String startDateTime = new SimpleDateFormat("MM-dd-yyyy_HH-ss").format(new GregorianCalendar().getTime());
 
+		String stopDateTime = new SimpleDateFormat("MM-dd-yyyy_HH-ss").format(new GregorianCalendar().getTime());
+
 		String userDirector = System.getProperty("user.dir");
 
-		// String resultFile = userDirector + "//report//TestHtmlReport.html";
 		String resultFile = userDirector + "/"
 				+ mCalendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) + "/ExecutionReport_"
 				+ dateFormat.format(date) + ".html";
@@ -72,6 +73,9 @@ public class TestBase {
 			bw1.write(
 					"<td colspan='1' align='left'><b><font color='#000000' face='Tahoma' size='1'>Start Time :&nbsp;</font></b><font color='#0000FF'' face='Tahoma' size='1'>"
 							+ startDateTime + " </font></td>");
+			bw1.write(
+					"<td colspan='1' align='left'><b><font color='#000000' face='Tahoma' size='1'>Stop Time :&nbsp;</font></b><font color='#0000FF'' face='Tahoma' size='1'>"
+							+ stopDateTime + " </font></td>");
 			bw1.write("</tr>");
 			bw1.write("</tr>");
 			bw1.write(
